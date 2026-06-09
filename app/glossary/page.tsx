@@ -1,14 +1,14 @@
 export const metadata = {
   title: "Glossary — ED:EN Production",
   description:
-    "Production and sourcing terminology for clothing brands — from BOM and CMT to tech packs, incoterms, and QC.",
+    "Production and sourcing terminology for clothing brands, from BOM and CMT to tech packs, incoterms, and QC.",
 };
 
 const TERMS = [
   {
     term: "AQL",
     definition:
-      "Acceptable Quality Level. A statistical sampling standard used during QC inspection to decide whether to accept or reject a production batch. AQL 2.5 is the most common level for apparel — it means no more than 2.5% of a batch can have major defects.",
+      "Acceptable Quality Level. A statistical sampling standard used during QC inspection to decide whether to accept or reject a production batch. AQL 2.5 is the most common level for apparel, meaning no more than 2.5% of a batch can have major defects.",
   },
   {
     term: "BOM",
@@ -18,12 +18,12 @@ const TERMS = [
   {
     term: "CMT",
     definition:
-      "Cut, Make, Trim. A manufacturing arrangement where the factory provides only labor — you supply all materials including fabrics, threads, and trims. CMT gives you greater control over material quality but requires more sourcing logistics on your end.",
+      "Cut, Make, Trim. A manufacturing arrangement where the factory provides only labor. You supply all materials including fabrics, threads, and trims. CMT gives you greater control over material quality but requires more sourcing logistics on your end.",
   },
   {
     term: "Colorway",
     definition:
-      "A specific color version of a style. The same pattern can be produced in multiple colorways — e.g., a hoodie offered in black, slate, and bone would be three colorways. Each colorway may have its own MOQ requirement.",
+      "A specific color version of a style. The same pattern can be produced in multiple colorways, e.g., a hoodie offered in black, slate, and bone would be three colorways. Each colorway may have its own MOQ requirement.",
   },
   {
     term: "DDP",
@@ -38,7 +38,7 @@ const TERMS = [
   {
     term: "ETA",
     definition:
-      "Estimated Time of Arrival. The date your goods are expected to arrive at the destination port or warehouse. ETAs shift based on vessel delays, port congestion, and customs clearance time — always plan buffer into your receiving schedule.",
+      "Estimated Time of Arrival. The date your goods are expected to arrive at the destination port or warehouse. ETAs shift based on vessel delays, port congestion, and customs clearance time, so always plan buffer into your receiving schedule.",
   },
   {
     term: "ETD",
@@ -103,7 +103,7 @@ const TERMS = [
   {
     term: "PP Sample",
     definition:
-      "Pre-Production Sample. The final sample made from the exact production fabrics, threads, trims, and labels before bulk production begins. The approved PP sample becomes the sealed sample — the reference standard all bulk units must match. Never approve bulk production without reviewing the PP sample.",
+      "Pre-Production Sample. The final sample made from the exact production fabrics, threads, trims, and labels before bulk production begins. The approved PP sample becomes the sealed sample, the reference standard all bulk units must match. Never approve bulk production without reviewing the PP sample.",
   },
   {
     term: "QC",
@@ -133,7 +133,7 @@ const TERMS = [
   {
     term: "Trim",
     definition:
-      "Any component of a garment other than the main fabric — including buttons, zippers, labels, patches, rivets, elastic, drawcords, eyelets, snaps, and embroidery. Trims are listed in the BOM and must be approved (often as physical samples) before bulk production.",
+      "Any component of a garment other than the main fabric — including buttons, zippers, labels, patches, rivets, elastic, drawcords, eyelets, snaps, and embroidery. They are listed in the BOM and must be approved (often as physical samples) before bulk production.",
   },
 ];
 
@@ -150,7 +150,7 @@ export default function GlossaryPage() {
           Glossary
         </h1>
         <p className="text-base text-gray-500 max-w-xl leading-relaxed">
-          Production and sourcing terms explained — from BOM and CMT to tech packs, incoterms, and QC.
+          Production and sourcing terms explained, from BOM and CMT to tech packs, incoterms, and QC.
         </p>
       </div>
 

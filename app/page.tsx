@@ -6,7 +6,7 @@ const FEATURES = [
     title: "Prompt Builder",
     label: "01",
     description:
-      "Generate clear, professional manufacturer messages for every stage of production — outreach, samples, QC, and more.",
+      "Generate clear, professional manufacturer messages for every stage of production: outreach, samples, QC, and more.",
     cta: "Build a Prompt",
   },
   {
@@ -48,7 +48,7 @@ export default function HomePage() {
         </h1>
         <p className="text-lg text-gray-500 max-w-xl leading-relaxed mb-10">
           Generate manufacturer communication prompts, complete production
-          checklists, and download tech-pack templates — all in one place.
+          checklists, and download tech-pack templates, all in one place.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link
@@ -113,7 +113,7 @@ export default function HomePage() {
             {
               step: "03",
               title: "Track your production",
-              body: "Use the Production Checklist to follow every stage from manufacturer research to shipment — progress is saved locally.",
+              body: "Use the Production Checklist to follow every stage from manufacturer research to shipment. Progress is saved locally.",
             },
           ].map((item) => (
             <div key={item.step}>

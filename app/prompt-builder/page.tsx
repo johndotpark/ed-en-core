@@ -389,7 +389,7 @@ export default function PromptBuilderPage() {
           Reference
         </p>
         <h2 className="text-2xl font-semibold tracking-tight mb-6">
-          Bulk QC — What to Request
+          Bulk QC: What to Request
         </h2>
         <p className="text-sm text-gray-500 mb-8 max-w-xl leading-relaxed">
           When requesting a bulk QC report, your message should cover these nine areas.

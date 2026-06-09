@@ -25,7 +25,7 @@ const GLOSSARY = [
   {
     term: "TOL",
     definition:
-      "Tolerance. The acceptable range of deviation from a measurement spec — typically ±0.5cm for most garment measurements.",
+      "Tolerance. The acceptable range of deviation from a measurement spec, typically ±0.5cm for most garment measurements.",
   },
   {
     term: "PP Sample",
@@ -45,7 +45,7 @@ const GLOSSARY = [
   {
     term: "GSM",
     definition:
-      "Grams per Square Metre. A measure of fabric weight and density — higher GSM means heavier, denser fabric.",
+      "Grams per Square Metre. A measure of fabric weight and density. Higher GSM means heavier, denser fabric.",
   },
   {
     term: "Colorway",
@@ -95,7 +95,7 @@ const GUIDES = [
   {
     title: "How to Request a Sample",
     sections: [
-      "Always provide a complete tech pack before requesting a sample — never rely on verbal description.",
+      "Always provide a complete tech pack before requesting a sample. Never rely on verbal description.",
       "Specify the sample size (recommend L or M for initial fit checks).",
       "Agree on sample cost and whether it's deducted from bulk production payment.",
       "Request measurement photos and construction photos with the sample delivery.",
@@ -128,7 +128,7 @@ export default function ResourcesPage() {
         </h1>
         <p className="text-base text-gray-500 max-w-xl leading-relaxed">
           Guides, terminology, and practical references for navigating clothing
-          production — from your first manufacturer outreach to bulk QC.
+          production, from your first manufacturer outreach to bulk QC.
         </p>
       </div>
 

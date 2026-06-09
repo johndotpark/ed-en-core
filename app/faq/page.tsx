@@ -19,7 +19,7 @@ const FAQS = [
   },
   {
     q: "What's the difference between a sample and a pre-production sample?",
-    a: "A first sample, also called a proto, is the factory's initial interpretation of your tech pack. It's built to check fit, construction, and proportion and often uses substitute fabrics. You'll typically go through one to three rounds of revisions on this. A pre-production sample, or PP sample, is the final approved sample made from the exact production fabrics, threads, labels, and trims that will be used in bulk. Once you approve the PP sample in writing, it becomes the sealed sample — the binding reference the factory must match during production. Never approve bulk production without signing off on a PP sample.",
+    a: "A first sample, also called a proto, is the factory's initial interpretation of your tech pack. It's built to check fit, construction, and proportion and often uses substitute fabrics. You'll typically go through one to three rounds of revisions on this. A pre-production sample, or PP sample, is the final approved sample made from the exact production fabrics, threads, labels, and trims that will be used in bulk. Once you approve the PP sample in writing, it becomes the sealed sample, the binding reference the factory must match during production. Never approve bulk production without signing off on a PP sample.",
   },
   {
     q: "What is CMT vs FOB vs DDP?",

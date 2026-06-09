@@ -103,7 +103,7 @@ export default function ChecklistPage() {
           Production Checklist
         </h1>
         <p className="text-base text-gray-500 max-w-xl leading-relaxed">
-          Follow all 8 stages of clothing production — from manufacturer
+          Follow all 8 stages of clothing production, starting from manufacturer
           research through packing and shipment. Progress is saved automatically.
         </p>
       </div>
