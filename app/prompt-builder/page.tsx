@@ -263,11 +263,11 @@ export default function PromptBuilderPage() {
           Reference
         </p>
         <h2 className="text-2xl font-semibold tracking-tight mb-6">
-          Denim Bulk QC — What to Request
+          Bulk QC — What to Request
         </h2>
         <p className="text-sm text-gray-500 mb-8 max-w-xl leading-relaxed">
-          When requesting a denim bulk QC report, your message should cover these nine areas.
-          The Prompt Builder includes all of these automatically when you select Denim + Bulk quality control.
+          When requesting a bulk QC report, your message should cover these nine areas.
+          The Prompt Builder includes all of these automatically when you select Bulk quality control.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px border border-gray-200 bg-gray-200">
           {[
