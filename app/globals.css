@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
+  --background: #F4F2EE;
+  --foreground: #111111;
+  --border: #D8D4CC;
+  --muted: #8C8880;
+  --card: #EDEAE4;
 }
 
 * {
@@ -27,26 +30,26 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply bg-black text-white px-5 py-2.5 text-sm font-medium border border-black hover:bg-gray-800 transition-colors cursor-pointer;
+    @apply bg-[#111111] text-[#F4F2EE] px-5 py-2.5 text-sm font-medium border border-[#111111] hover:bg-[#2a2a2a] transition-colors cursor-pointer;
   }
 
   .btn-secondary {
-    @apply bg-white text-black px-5 py-2.5 text-sm font-medium border border-black hover:bg-black hover:text-white transition-colors cursor-pointer;
+    @apply bg-transparent text-[#111111] px-5 py-2.5 text-sm font-medium border border-[#111111] hover:bg-[#111111] hover:text-[#F4F2EE] transition-colors cursor-pointer;
   }
 
   .btn-ghost {
-    @apply bg-white text-black px-5 py-2.5 text-sm font-medium border border-gray-300 hover:border-black transition-colors cursor-pointer;
+    @apply bg-transparent text-[#111111] px-5 py-2.5 text-sm font-medium border border-[#D8D4CC] hover:border-[#111111] transition-colors cursor-pointer;
   }
 
   .input-field {
-    @apply w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black bg-white;
+    @apply w-full border border-[#D8D4CC] px-4 py-3 text-sm focus:outline-none focus:border-[#111111] bg-[#F4F2EE];
   }
 
   .section-label {
-    @apply text-xs font-semibold uppercase tracking-widest text-gray-500;
+    @apply text-xs font-semibold uppercase tracking-widest text-[#8C8880];
   }
 
   .card {
-    @apply border border-gray-200 bg-white;
+    @apply border border-[#D8D4CC] bg-[#EDEAE4];
   }
 }

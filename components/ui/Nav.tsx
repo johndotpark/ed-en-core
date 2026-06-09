@@ -15,13 +15,14 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <nav className="border-b border-gray-200 bg-white sticky top-0 z-50">
+    <nav className="sticky top-0 z-50 border-b" style={{ background: "var(--background)", borderColor: "var(--border)" }}>
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-8">
         <Link
           href="/"
           className="text-base font-semibold tracking-tight shrink-0"
+          style={{ color: "var(--foreground)" }}
         >
-          Factory OS
+          ED:EN Production
         </Link>
         <div className="hidden md:flex items-center gap-1 overflow-x-auto">
           {NAV_LINKS.slice(1).map((link) => (
@@ -30,9 +31,10 @@ export default function Nav() {
               href={link.href}
               className={`px-3 py-1.5 text-sm whitespace-nowrap transition-colors ${
                 pathname === link.href
-                  ? "bg-black text-white"
-                  : "text-gray-600 hover:text-black hover:bg-gray-100"
+                  ? "text-[#F4F2EE] bg-[#111111]"
+                  : "hover:bg-[#EDEAE4]"
               }`}
+              style={pathname !== link.href ? { color: "var(--muted)" } : {}}
             >
               {link.label}
             </Link>
@@ -46,9 +48,10 @@ export default function Nav() {
               href={link.href}
               className={`px-2 py-1 text-xs whitespace-nowrap transition-colors ${
                 pathname === link.href
-                  ? "bg-black text-white"
-                  : "text-gray-600 hover:text-black"
+                  ? "text-[#F4F2EE] bg-[#111111]"
+                  : ""
               }`}
+              style={pathname !== link.href ? { color: "var(--muted)" } : {}}
             >
               {link.label.split(" ")[0]}
             </Link>

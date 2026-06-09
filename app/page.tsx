@@ -41,7 +41,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="py-20 border-b border-gray-100">
         <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-6">
-          Factory OS
+          ED:EN Production
         </p>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-tight max-w-3xl mb-8">
           Production tools for clothing brand owners.
@@ -108,7 +108,7 @@ export default function HomePage() {
             {
               step: "02",
               title: "Generate your message",
-              body: "Factory OS generates a professional manufacturer message you can edit, copy, or download as a PDF.",
+              body: "ED:EN Production generates a professional manufacturer message you can edit, copy, or download as a PDF.",
             },
             {
               step: "03",

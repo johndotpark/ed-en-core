@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Factory OS — Clothing Brand Production Tools",
+  title: "ED:EN Production — Clothing Brand Production Tools",
   description:
     "Generate manufacturer communication prompts, complete production checklists, and download tech-pack templates for clothing brands.",
 };
@@ -28,13 +28,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-white text-black`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+        style={{ background: "var(--background)", color: "var(--foreground)" }}
       >
         <Nav />
         <main className="min-h-[calc(100vh-64px)]">{children}</main>
-        <footer className="border-t border-gray-200 py-8 mt-16">
-          <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-            <span className="font-medium tracking-tight text-black">Factory OS</span>
+        <footer className="border-t mt-16" style={{ borderColor: "var(--border)" }}>
+          <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style={{ color: "var(--muted)" }}>
+            <span className="font-semibold tracking-tight" style={{ color: "var(--foreground)" }}>ED:EN Production</span>
             <span>Production tools for clothing brand owners.</span>
           </div>
         </footer>

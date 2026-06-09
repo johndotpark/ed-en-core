@@ -97,7 +97,7 @@ export default function ChecklistPage() {
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="mb-10">
         <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
-          Factory OS
+          ED:EN Production
         </p>
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
           Production Checklist

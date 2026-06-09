@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "Tech Pack Template — Factory OS",
+  title: "Tech Pack Template — ED:EN Production",
   description:
-    "Download the Factory OS general tech pack template in Adobe Illustrator format.",
+    "Download the ED:EN Production general tech pack template in Adobe Illustrator format.",
 };
 
 export default function TemplatesPage() {
@@ -9,7 +9,7 @@ export default function TemplatesPage() {
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="mb-10">
         <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
-          Factory OS
+          ED:EN Production
         </p>
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
           Tech Pack Template
