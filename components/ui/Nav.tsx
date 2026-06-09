@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/prompt-builder", label: "Prompt Builder" },
-  { href: "/templates", label: "Tech Pack Templates" },
+  { href: "/templates", label: "Tech Pack Template" },
   { href: "/checklist", label: "Production Checklist" },
   { href: "/resources", label: "Resources" },
   { href: "/glossary", label: "Glossary" },
