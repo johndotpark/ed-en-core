@@ -37,6 +37,14 @@ export default function RootLayout({
           <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style={{ color: "var(--muted)" }}>
             <span className="font-semibold tracking-tight" style={{ color: "var(--foreground)" }}>ED:EN Production</span>
             <span>Production tools for clothing brand owners.</span>
+            <a
+              href="https://buymeacoffee.com/jawndot"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 bg-[#FFDD00] text-black text-xs font-semibold hover:bg-[#f0cf00] transition-colors"
+            >
+              ☕ Buy me a coffee
+            </a>
           </div>
         </footer>
       </body>
