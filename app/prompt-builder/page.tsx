@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,6 +9,12 @@ import GeneratedPromptPreview from "@/components/ui/GeneratedPromptPreview";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { generatePrompt } from "@/lib/promptTemplates";
 import { ProductCategory, ProductionStage, PromptBuilderFormData } from "@/types";
+import {
+  trackPromptStarted,
+  trackPromptGenerated,
+  trackPromptCopied,
+  trackPromptPdfDownloaded,
+} from "@/lib/analytics";
 
 const PRODUCT_CATEGORIES: ProductCategory[] = [
   "T-shirt",
@@ -59,6 +65,7 @@ export default function PromptBuilderPage() {
   const [editedPrompt, setEditedPrompt] = useState("");
   const [copied, setCopied] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
+  const hasTrackedStart = useRef(false);
   const [savedPrompts, setSavedPrompts] = useState<SavedPrompt[]>([]);
   const [savingName, setSavingName] = useState("");
   const [showSaveInput, setShowSaveInput] = useState(false);
@@ -97,19 +104,42 @@ export default function PromptBuilderPage() {
     } catch {}
   }, [formValues]);
 
+  useEffect(() => {
+    if (!hasTrackedStart.current && (formValues.productCategory || formValues.productionStage)) {
+      hasTrackedStart.current = true;
+      trackPromptStarted({
+        product_type: formValues.productCategory || undefined,
+        production_stage: formValues.productionStage || undefined,
+        source_page: '/prompt-builder',
+      });
+    }
+  }, [formValues.productCategory, formValues.productionStage]);
+
   function onSubmit(data: FormValues) {
     const prompt = generatePrompt(data as unknown as PromptBuilderFormData);
     setEditedPrompt(prompt);
     setHasGenerated(true);
+    trackPromptGenerated({
+      product_type: data.productCategory || undefined,
+      production_stage: data.productionStage || undefined,
+      selected_option_count: [data.productCategory, data.productionStage].filter(Boolean).length,
+      source_page: '/prompt-builder',
+    });
     setTimeout(() => {
       document.getElementById("prompt-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   }
 
   function handleCopy() {
+    const currentValues = formValues;
     navigator.clipboard.writeText(editedPrompt).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      trackPromptCopied({
+        product_type: currentValues.productCategory || undefined,
+        production_stage: currentValues.productionStage || undefined,
+        source_page: '/prompt-builder',
+      });
     });
   }
 
@@ -123,6 +153,11 @@ export default function PromptBuilderPage() {
   }
 
   function handleDownload() {
+    trackPromptPdfDownloaded({
+      product_type: formValues.productCategory || undefined,
+      production_stage: formValues.productionStage || undefined,
+      source_page: '/prompt-builder',
+    });
     const blob = new Blob([editedPrompt], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");

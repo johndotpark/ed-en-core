@@ -1,18 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import WorkflowStep from "@/components/ui/WorkflowStep";
 import ProgressBar from "@/components/ui/ProgressBar";
 import { CHECKLIST_STEPS } from "@/lib/checklistData";
 import { ChecklistStep } from "@/types";
+import { trackChecklistStarted, trackChecklistReturned } from "@/lib/analytics";
 
 const LS_KEY = "factory-os-checklist";
+const CHECKLIST_STARTED_AT_KEY = "production_checklist_started_at";
+const CHECKLIST_RETURN_TRACKED_KEY = "production_checklist_return_tracked";
 
 export default function ChecklistPage() {
   const [steps, setSteps] = useState<ChecklistStep[]>(CHECKLIST_STEPS);
   const [expandedSteps, setExpandedSteps] = useState<Set<string>>(
     new Set(["step-1"])
   );
+  const hasTrackedChecklistStart = useRef(false);
 
   // Load from localStorage
   useEffect(() => {
@@ -46,9 +50,40 @@ export default function ChecklistPage() {
     } catch {}
   }, [steps]);
 
+  // Track checklist_returned on mount (if returning to a started checklist)
+  useEffect(() => {
+    try {
+      const startedAt = localStorage.getItem(CHECKLIST_STARTED_AT_KEY);
+      const returnTracked = localStorage.getItem(CHECKLIST_RETURN_TRACKED_KEY);
+      const saved = localStorage.getItem(LS_KEY);
+      if (startedAt && returnTracked !== 'true' && saved) {
+        const parsed: Record<string, boolean> = JSON.parse(saved);
+        const allItems = CHECKLIST_STEPS.flatMap((s) => s.items);
+        const total = allItems.length;
+        const completed = allItems.filter((i) => parsed[i.id]).length;
+        if (completed > 0) {
+          const daysSinceStarted = Math.floor(
+            (Date.now() - new Date(startedAt).getTime()) / (1000 * 60 * 60 * 24)
+          );
+          trackChecklistReturned({
+            checklist_name: 'Production Checklist',
+            completed_items: completed,
+            total_items: total,
+            completion_percentage: Math.round((completed / total) * 100),
+            days_since_started: daysSinceStarted,
+            source_page: '/checklist',
+          });
+          localStorage.setItem(CHECKLIST_RETURN_TRACKED_KEY, 'true');
+        }
+      }
+    } catch {}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function toggleItem(stepId: string, itemId: string) {
-    setSteps((prev) =>
-      prev.map((step) =>
+    setSteps((prev) => {
+      const hadNoProgress = prev.every((s) => s.items.every((i) => !i.checked));
+      const next = prev.map((step) =>
         step.id === stepId
           ? {
               ...step,
@@ -59,8 +94,29 @@ export default function ChecklistPage() {
               ),
             }
           : step
-      )
-    );
+      );
+      // Track checklist_started when first item is checked from a clean state
+      if (hadNoProgress && !hasTrackedChecklistStart.current) {
+        const newlyChecked = next
+          .flatMap((s) => s.items)
+          .some((i) => i.checked);
+        if (newlyChecked) {
+          hasTrackedChecklistStart.current = true;
+          const totalItems = next.reduce((acc, s) => acc + s.items.length, 0);
+          trackChecklistStarted({
+            checklist_name: 'Production Checklist',
+            total_items: totalItems,
+            source_page: '/checklist',
+          });
+          try {
+            localStorage.setItem(CHECKLIST_STARTED_AT_KEY, new Date().toISOString());
+            localStorage.setItem('production_checklist_last_visit', new Date().toISOString());
+            localStorage.removeItem(CHECKLIST_RETURN_TRACKED_KEY);
+          } catch {}
+        }
+      }
+      return next;
+    });
   }
 
   function toggleExpand(stepId: string) {
