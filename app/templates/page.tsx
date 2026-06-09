@@ -47,10 +47,10 @@ export default function TemplatesPage() {
               href="https://drive.google.com/uc?export=download&id=YOUR_FILE_ID"
             */}
             <a
-              href="#"
+              href="https://drive.google.com/uc?export=download&id=1toP9HBST5YX9rnSEs9xCaJTYAtNodDOk"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-between px-4 py-3 bg-black text-white text-sm hover:bg-gray-800 transition-colors"
-              onClick={(e) => e.preventDefault()}
-              title="Upload the AI file to Google Drive and replace the href"
             >
               <span>Download .ai file</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -67,16 +67,6 @@ export default function TemplatesPage() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-gray-100 pt-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
-            How to add the download link
-          </p>
-          <ol className="text-xs text-gray-500 space-y-1 leading-relaxed list-decimal list-inside">
-            <li>Upload your .ai file to Google Drive</li>
-            <li>Right-click → Share → Anyone with the link → Copy link</li>
-            <li>Open <code className="bg-gray-100 px-1">app/templates/page.tsx</code> and replace the <code className="bg-gray-100 px-1">href=&quot;#&quot;</code> with your link</li>
-          </ol>
-        </div>
       </div>
 
       {/* What's in a tech pack */}
