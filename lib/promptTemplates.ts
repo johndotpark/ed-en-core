@@ -2,13 +2,13 @@ import { PromptBuilderFormData } from "@/types";
 
 // Preset defaults by product category
 const PRESET_MEASUREMENTS: Record<string, string[]> = {
-  "T-shirt": ["Chest", "Body length", "Shoulder width", "Sleeve length"],
-  "Hoodie": ["Chest", "Body length", "Shoulder width", "Sleeve length", "Hood height"],
-  "Sweatpants": ["Waist", "Hips", "Inseam", "Thigh", "Leg opening"],
-  "Denim": ["Waist", "Hips", "Inseam", "Thigh", "Leg opening", "Rise"],
-  "Jacket": ["Chest", "Body length", "Shoulder width", "Sleeve length", "Waist"],
-  "Shorts": ["Waist", "Hips", "Inseam", "Thigh", "Outseam"],
-  "Dress": ["Chest", "Waist", "Hips", "Body length", "Shoulder width"],
+  "T-shirt": ["Chest", "Body length", "Shoulder width", "Sleeve length", "Sleeve opening", "Neck width"],
+  "Hoodie": ["Chest", "Body length", "Shoulder width", "Sleeve length", "Sleeve width", "Hem width", "Hood opening"],
+  "Sweatpants": ["Waist", "Hip", "Inseam", "Outseam", "Thigh", "Knee", "Leg opening"],
+  "Denim": ["Waist", "Hip", "Rise", "Thigh", "Knee", "Inseam", "Outseam", "Hem opening"],
+  "Jacket": ["Chest", "Body length", "Shoulder width", "Sleeve length", "Waist", "Hem width"],
+  "Shorts": ["Waist", "Hip", "Inseam", "Outseam", "Thigh", "Leg opening"],
+  "Dress": ["Chest", "Waist", "Hip", "Body length", "Shoulder width", "Sleeve length"],
   "Other": ["Chest", "Waist", "Body length"],
 };
 
@@ -41,7 +41,7 @@ function formatList(items: string[]): string {
 export function generatePrompt(data: PromptBuilderFormData): string {
   const { productCategory, productionStage, brandName } = data;
 
-  const brand = brandName.trim() || "[Brand Name]";
+  const brand = brandName.trim() || "Your brand";
   const product = productCategory || "[Product]";
 
   const measurements = PRESET_MEASUREMENTS[product] ?? PRESET_MEASUREMENTS["Other"];

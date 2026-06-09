@@ -35,7 +35,7 @@ const LS_KEY = "factory-os-prompt-builder";
 const SAVED_PROMPTS_KEY = "eden-saved-prompts";
 
 const schema = z.object({
-  brandName: z.string().min(1, "Enter your brand name"),
+  brandName: z.string(),
   productCategory: z.string().min(1, "Select a product category"),
   productionStage: z.string().min(1, "Select a production stage"),
 });
@@ -69,6 +69,7 @@ export default function PromptBuilderPage() {
     control,
     reset,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -174,13 +175,36 @@ export default function PromptBuilderPage() {
         </p>
       </div>
 
+      {/* Most Popular Preset */}
+      <div className="mb-8 border-l-4 border-black bg-[#f9f9f9] px-6 py-5 max-w-xl">
+        <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">⚡ Most Popular</p>
+        <h2 className="text-base font-semibold mb-1">Bulk Order QC Request</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Generate the exact inspection request used before approving shipment.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            setValue("productionStage", "Bulk quality control");
+            setValue("productCategory", "Denim");
+            handleSubmit(onSubmit)();
+            setTimeout(() => {
+              document.getElementById("prompt-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 150);
+          }}
+          className="text-sm font-medium border-b border-black pb-0.5 hover:text-gray-600 hover:border-gray-600 transition-colors"
+        >
+          Use This Template →
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-10">
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 
           <FormSection
             title="Brand Name"
-            description="This will be used to personalise your message."
+            description="Optional. Defaults to 'Your brand' if left blank."
           >
             <input
               {...register("brandName")}
@@ -334,14 +358,37 @@ export default function PromptBuilderPage() {
               )}
             </>
           ) : (
-            <div className="border border-dashed border-gray-200 p-8 text-center">
-              <p className="text-sm font-medium text-gray-800 mb-2">
-                Your message will appear here
-              </p>
-              <p className="text-xs text-gray-400">
-                Fill in the form and click Generate Message.
-              </p>
-            </div>
+            <>
+              {/* Static preview */}
+              <div className="border border-gray-200 p-6 select-none">
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-300 mb-4">
+                  Preview — Bulk QC Request
+                </p>
+                <div className="space-y-3 text-gray-300 text-sm font-mono leading-relaxed">
+                  <p>Subject: Bulk QC Inspection Request — [Your Brand]</p>
+                  <p className="mt-2">Please provide the following QC documentation:</p>
+                  <div className="mt-1 space-y-1 text-gray-300">
+                    <p>  Measurement report ................</p>
+                    <p>  Random measurement photos .........</p>
+                    <p>  Construction close-ups ............</p>
+                    <p>  Defect inspection .................</p>
+                    <p>  Packing approval ..................</p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-300 mt-5 italic">
+                  Generate a message to see the full output
+                </p>
+              </div>
+              {/* Empty state */}
+              <div className="border border-dashed border-gray-200 p-8 text-center">
+                <p className="text-sm font-medium text-gray-800 mb-2">
+                  Your message will appear here
+                </p>
+                <p className="text-xs text-gray-400">
+                  Fill in the form and click Generate Message.
+                </p>
+              </div>
+            </>
           )}
         </div>
       </div>
