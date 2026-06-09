@@ -51,17 +51,18 @@ export type PhotoRequirement =
   | 'Sample vs bulk comparison';
 
 export interface PromptBuilderFormData {
+  brandName: string;
   productCategory: ProductCategory | '';
   productionStage: ProductionStage | '';
-  sizes: Size[];
-  measurements: Measurement[];
-  constructionDetails: string;
-  defectChecks: DefectCheck[];
-  photoRequirements: PhotoRequirement[];
-  packagingRequirements: string;
-  brandName: string;
-  styleNumber: string;
-  customSizes: string;
+  // legacy fields — kept for type compatibility, not used in v2 form
+  sizes?: Size[];
+  measurements?: Measurement[];
+  constructionDetails?: string;
+  defectChecks?: DefectCheck[];
+  photoRequirements?: PhotoRequirement[];
+  packagingRequirements?: string;
+  styleNumber?: string;
+  customSizes?: string;
 }
 
 export interface ChecklistItem {

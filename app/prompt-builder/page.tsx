@@ -5,19 +5,10 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import FormSection from "@/components/ui/FormSection";
-import CheckboxGroup from "@/components/ui/CheckboxGroup";
 import GeneratedPromptPreview from "@/components/ui/GeneratedPromptPreview";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { generatePrompt } from "@/lib/promptTemplates";
-import {
-  ProductCategory,
-  ProductionStage,
-  Size,
-  Measurement,
-  DefectCheck,
-  PhotoRequirement,
-  PromptBuilderFormData,
-} from "@/types";
+import { ProductCategory, ProductionStage, PromptBuilderFormData } from "@/types";
 
 const PRODUCT_CATEGORIES: ProductCategory[] = [
   "T-shirt",
@@ -30,86 +21,33 @@ const PRODUCT_CATEGORIES: ProductCategory[] = [
   "Other",
 ];
 
-const PRODUCTION_STAGES: ProductionStage[] = [
-  "Manufacturer outreach",
-  "Sample request",
-  "Sample revision",
-  "Pre-production confirmation",
-  "Bulk quality control",
-  "Packing confirmation",
-  "Defect complaint",
-];
-
-const SIZES: Size[] = ["XS", "S", "M", "L", "XL", "XXL", "Custom"];
-
-const MEASUREMENTS: Measurement[] = [
-  "Chest",
-  "Waist",
-  "Hips",
-  "Inseam",
-  "Sleeve length",
-  "Shoulder width",
-  "Body length",
-  "Neck",
-  "Thigh",
-];
-
-const DEFECT_CHECKS: DefectCheck[] = [
-  "Stitching",
-  "Color accuracy",
-  "Sizing accuracy",
-  "Fabric defects",
-  "Pilling or snags",
-  "Print quality",
-  "Label placement",
-  "Seam alignment",
-];
-
-const PHOTO_REQUIREMENTS: PhotoRequirement[] = [
-  "Full garment front",
-  "Full garment back",
-  "Close-up stitching",
-  "Label and tags",
-  "Measurements flat lay",
-  "Defect close-up",
-  "Packing photo",
-  "Sample vs bulk comparison",
+const PRODUCTION_STAGES: { value: ProductionStage; description: string }[] = [
+  { value: "Manufacturer outreach", description: "First contact with a new factory" },
+  { value: "Sample request", description: "Request a prototype garment" },
+  { value: "Sample revision", description: "Send correction notes on a sample" },
+  { value: "Pre-production confirmation", description: "Approve bulk production start" },
+  { value: "Bulk quality control", description: "Request QC inspection before shipment" },
+  { value: "Packing confirmation", description: "Confirm packing before shipping" },
+  { value: "Defect complaint", description: "Report defects in received goods" },
 ];
 
 const LS_KEY = "factory-os-prompt-builder";
 
 const schema = z.object({
+  brandName: z.string().min(1, "Enter your brand name"),
   productCategory: z.string().min(1, "Select a product category"),
   productionStage: z.string().min(1, "Select a production stage"),
-  sizes: z.array(z.string()),
-  measurements: z.array(z.string()),
-  constructionDetails: z.string(),
-  defectChecks: z.array(z.string()),
-  photoRequirements: z.array(z.string()),
-  packagingRequirements: z.string(),
-  brandName: z.string(),
-  styleNumber: z.string(),
-  customSizes: z.string(),
 });
 
 type FormValues = z.infer<typeof schema>;
 
 const DEFAULT_VALUES: FormValues = {
+  brandName: "",
   productCategory: "",
   productionStage: "",
-  sizes: [],
-  measurements: [],
-  constructionDetails: "",
-  defectChecks: [],
-  photoRequirements: [],
-  packagingRequirements: "",
-  brandName: "",
-  styleNumber: "",
-  customSizes: "",
 };
 
 export default function PromptBuilderPage() {
-  const [, setGeneratedPrompt] = useState("");
   const [editedPrompt, setEditedPrompt] = useState("");
   const [copied, setCopied] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
@@ -126,18 +64,13 @@ export default function PromptBuilderPage() {
     defaultValues: DEFAULT_VALUES,
   });
 
-  // Load saved state
   useEffect(() => {
     try {
       const saved = localStorage.getItem(LS_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        reset(parsed);
-      }
+      if (saved) reset(JSON.parse(saved));
     } catch {}
   }, [reset]);
 
-  // Save to localStorage on change
   const formValues = watch();
   useEffect(() => {
     try {
@@ -146,15 +79,11 @@ export default function PromptBuilderPage() {
   }, [formValues]);
 
   function onSubmit(data: FormValues) {
-    const prompt = generatePrompt(data as PromptBuilderFormData);
-    setGeneratedPrompt(prompt);
+    const prompt = generatePrompt(data as unknown as PromptBuilderFormData);
     setEditedPrompt(prompt);
     setHasGenerated(true);
     setTimeout(() => {
-      document.getElementById("prompt-output")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      document.getElementById("prompt-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   }
 
@@ -167,16 +96,12 @@ export default function PromptBuilderPage() {
 
   function handleReset() {
     reset(DEFAULT_VALUES);
-    setGeneratedPrompt("");
     setEditedPrompt("");
     setHasGenerated(false);
-    try {
-      localStorage.removeItem(LS_KEY);
-    } catch {}
+    try { localStorage.removeItem(LS_KEY); } catch {}
   }
 
-  function handleDownloadPdf() {
-    // Client-side text download as fallback (PDF renderer loaded dynamically)
+  function handleDownload() {
     const blob = new Blob([editedPrompt], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -196,41 +121,24 @@ export default function PromptBuilderPage() {
           Prompt Builder
         </h1>
         <p className="text-base text-gray-500 max-w-xl leading-relaxed">
-          Fill in your product and production details to generate a professional
-          manufacturer message. You can edit the output before copying or
-          downloading.
+          Select your product and production stage to generate a ready-to-send manufacturer message.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-10">
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+
           <FormSection
-            title="Brand Details"
-            description="Optional — used to personalize your message."
+            title="Brand Name"
+            description="This will be used to personalise your message."
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs font-medium text-gray-600 uppercase tracking-wider block mb-1.5">
-                  Brand Name
-                </label>
-                <input
-                  {...register("brandName")}
-                  placeholder="e.g. Studio Noir"
-                  className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black bg-white"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-gray-600 uppercase tracking-wider block mb-1.5">
-                  Style Number
-                </label>
-                <input
-                  {...register("styleNumber")}
-                  placeholder="e.g. SN-001"
-                  className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black bg-white"
-                />
-              </div>
-            </div>
+            <input
+              {...register("brandName")}
+              placeholder="e.g. Studio Noir"
+              className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black bg-white"
+            />
+            {errors.brandName && <ErrorMessage message={errors.brandName.message!} />}
           </FormSection>
 
           <FormSection title="Product Category" description="Select the garment type.">
@@ -256,143 +164,39 @@ export default function PromptBuilderPage() {
                 }
               />
             </div>
-            {errors.productCategory && (
-              <ErrorMessage message={errors.productCategory.message!} />
-            )}
+            {errors.productCategory && <ErrorMessage message={errors.productCategory.message!} />}
           </FormSection>
 
           <FormSection
             title="Production Stage"
-            description="What stage of production are you communicating about?"
+            description="What are you communicating with your manufacturer about?"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <Controller
                 name="productionStage"
                 control={control}
                 render={({ field }) =>
-                  PRODUCTION_STAGES.map((stage) => (
+                  PRODUCTION_STAGES.map(({ value, description }) => (
                     <button
-                      key={stage}
+                      key={value}
                       type="button"
-                      onClick={() => field.onChange(stage)}
-                      className={`px-3 py-2.5 border text-sm transition-colors text-left ${
-                        field.value === stage
+                      onClick={() => field.onChange(value)}
+                      className={`px-4 py-3 border text-left transition-colors ${
+                        field.value === value
                           ? "border-black bg-black text-white"
                           : "border-gray-200 hover:border-gray-400"
                       }`}
                     >
-                      {stage}
+                      <span className="block text-sm font-medium">{value}</span>
+                      <span className={`block text-xs mt-0.5 ${field.value === value ? "text-gray-300" : "text-gray-400"}`}>
+                        {description}
+                      </span>
                     </button>
                   )) as unknown as React.ReactElement
                 }
               />
             </div>
-            {errors.productionStage && (
-              <ErrorMessage message={errors.productionStage.message!} />
-            )}
-          </FormSection>
-
-          <FormSection title="Sizes" description="Select all sizes in this order.">
-            <Controller
-              name="sizes"
-              control={control}
-              render={({ field }) => (
-                <CheckboxGroup
-                  options={SIZES.filter((s) => s !== "Custom")}
-                  selected={field.value}
-                  onChange={field.onChange}
-                  columns={4}
-                />
-              )}
-            />
-            <div className="mt-3">
-              <label className="text-xs font-medium text-gray-600 uppercase tracking-wider block mb-1.5">
-                Custom Sizes
-              </label>
-              <input
-                {...register("customSizes")}
-                placeholder="e.g. 28, 30, 32, 34"
-                className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black bg-white"
-              />
-            </div>
-          </FormSection>
-
-          <FormSection
-            title="Measurements Required"
-            description="Select all measurement points the manufacturer must check."
-          >
-            <Controller
-              name="measurements"
-              control={control}
-              render={({ field }) => (
-                <CheckboxGroup
-                  options={MEASUREMENTS}
-                  selected={field.value}
-                  onChange={field.onChange}
-                  columns={3}
-                />
-              )}
-            />
-          </FormSection>
-
-          <FormSection
-            title="Construction Details"
-            description="Describe any specific construction requirements, materials, or techniques."
-          >
-            <textarea
-              {...register("constructionDetails")}
-              placeholder="e.g. Double-needle hem, 300gsm French terry, YKK zipper, ribbed cuffs..."
-              rows={4}
-              className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black bg-white resize-y leading-relaxed"
-            />
-          </FormSection>
-
-          <FormSection
-            title="Defect Checks"
-            description="Select all defect categories to include in the inspection request."
-          >
-            <Controller
-              name="defectChecks"
-              control={control}
-              render={({ field }) => (
-                <CheckboxGroup
-                  options={DEFECT_CHECKS}
-                  selected={field.value}
-                  onChange={field.onChange}
-                  columns={2}
-                />
-              )}
-            />
-          </FormSection>
-
-          <FormSection
-            title="Photo Requirements"
-            description="Select all photo types to request from the manufacturer."
-          >
-            <Controller
-              name="photoRequirements"
-              control={control}
-              render={({ field }) => (
-                <CheckboxGroup
-                  options={PHOTO_REQUIREMENTS}
-                  selected={field.value}
-                  onChange={field.onChange}
-                  columns={2}
-                />
-              )}
-            />
-          </FormSection>
-
-          <FormSection
-            title="Packaging Requirements"
-            description="Describe packaging, folding, poly bagging, labeling, or carton specifications."
-          >
-            <textarea
-              {...register("packagingRequirements")}
-              placeholder="e.g. Individual poly bags, size sticker on bag, 12 units per carton, hang tags attached..."
-              rows={3}
-              className="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black bg-white resize-y leading-relaxed"
-            />
+            {errors.productionStage && <ErrorMessage message={errors.productionStage.message!} />}
           </FormSection>
 
           <div className="flex gap-3 pt-2">
@@ -407,7 +211,7 @@ export default function PromptBuilderPage() {
               onClick={handleReset}
               className="px-6 py-3 border border-gray-300 text-sm font-medium hover:border-black transition-colors"
             >
-              Reset Form
+              Reset
             </button>
           </div>
         </form>
@@ -425,7 +229,7 @@ export default function PromptBuilderPage() {
               />
               <button
                 type="button"
-                onClick={handleDownloadPdf}
+                onClick={handleDownload}
                 className="w-full px-4 py-3 border border-gray-300 text-sm hover:border-black transition-colors flex items-center justify-center gap-2"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -443,7 +247,7 @@ export default function PromptBuilderPage() {
           ) : (
             <div className="border border-dashed border-gray-200 p-8 text-center">
               <p className="text-sm font-medium text-gray-800 mb-2">
-                Your generated message will appear here
+                Your message will appear here
               </p>
               <p className="text-xs text-gray-400">
                 Fill in the form and click Generate Message.
@@ -453,66 +257,29 @@ export default function PromptBuilderPage() {
         </div>
       </div>
 
-      {/* Denim Bulk QC Section */}
+      {/* Denim Bulk QC reference */}
       <section className="mt-20 border-t border-gray-100 pt-12">
         <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
           Reference
         </p>
         <h2 className="text-2xl font-semibold tracking-tight mb-6">
-          Denim Bulk QC Template Sections
+          Denim Bulk QC — What to Request
         </h2>
         <p className="text-sm text-gray-500 mb-8 max-w-xl leading-relaxed">
-          When requesting a denim bulk QC inspection, your message should cover
-          the following sections. The Prompt Builder covers these automatically
-          when you select Denim + Bulk quality control.
+          When requesting a denim bulk QC report, your message should cover these nine areas.
+          The Prompt Builder includes all of these automatically when you select Denim + Bulk quality control.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px border border-gray-200 bg-gray-200">
           {[
-            {
-              n: "01",
-              title: "Size Measurement Report",
-              body: "Random garment measurements per size vs. approved spec tolerances.",
-            },
-            {
-              n: "02",
-              title: "Random Garment Measurement Photos",
-              body: "Flat-lay photos of measured garments showing tape measure placement.",
-            },
-            {
-              n: "03",
-              title: "Bulk Order Quantity",
-              body: "Total units per size confirmation against purchase order.",
-            },
-            {
-              n: "04",
-              title: "Full Garment Photos",
-              body: "Front and back full-garment photos across a random unit selection.",
-            },
-            {
-              n: "05",
-              title: "Construction Close-Ups",
-              body: "Close-up photos of stitching, rivets, buttons, pockets, and seams.",
-            },
-            {
-              n: "06",
-              title: "Approved Sample Comparison",
-              body: "Side-by-side of bulk garment vs. sealed pre-production sample.",
-            },
-            {
-              n: "07",
-              title: "Pocket and Symmetry Check",
-              body: "Pocket placement alignment and symmetry measurements.",
-            },
-            {
-              n: "08",
-              title: "Defect Inspection",
-              body: "Count and document stitching faults, color inconsistencies, and fabric defects.",
-            },
-            {
-              n: "09",
-              title: "Packing Confirmation",
-              body: "Photos of packed cartons, packing list, and correct labeling.",
-            },
+            { n: "01", title: "Size Measurement Report", body: "Random garment measurements per size vs. approved spec tolerances." },
+            { n: "02", title: "Measurement Photos", body: "Flat-lay photos of measured garments showing tape measure placement." },
+            { n: "03", title: "Bulk Order Quantity", body: "Total units per size confirmed against purchase order." },
+            { n: "04", title: "Full Garment Photos", body: "Front and back full-garment photos across a random unit selection." },
+            { n: "05", title: "Construction Close-Ups", body: "Close-up photos of stitching, rivets, buttons, pockets, and seams." },
+            { n: "06", title: "Approved Sample Comparison", body: "Side-by-side of bulk garment vs. sealed pre-production sample." },
+            { n: "07", title: "Pocket and Symmetry Check", body: "Pocket placement alignment and symmetry measurements." },
+            { n: "08", title: "Defect Inspection", body: "Count and document stitching faults, color inconsistencies, and fabric defects." },
+            { n: "09", title: "Packing Confirmation", body: "Photos of packed cartons, packing list, and correct labeling." },
           ].map((item) => (
             <div key={item.n} className="bg-white p-6">
               <p className="text-xs font-semibold text-gray-300 mb-3">{item.n}</p>
