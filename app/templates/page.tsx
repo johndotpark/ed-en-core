@@ -20,6 +20,18 @@ export default function TemplatesPage() {
         </p>
       </div>
 
+      {/* Preview image */}
+      <div className="mb-10 border border-gray-200">
+        <img
+          src="/tech-pack-preview.jpg"
+          alt="Tech pack template preview"
+          className="w-full"
+        />
+        <p className="text-xs text-gray-400 text-center py-3 border-t border-gray-100">
+          Template preview — all pages included in the download
+        </p>
+      </div>
+
       {/* Main download card */}
       <div className="border border-gray-200 p-8 mb-12">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
