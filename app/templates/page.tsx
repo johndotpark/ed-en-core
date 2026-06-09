@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Tech Pack Template — ED:EN Production",
+  title: "Free Tech Pack Template — ED:EN Production",
   description:
     "Download the ED:EN Production general tech pack template in Adobe Illustrator format.",
 };
@@ -12,7 +12,7 @@ export default function TemplatesPage() {
           ED:EN Production
         </p>
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
-          Tech Pack Template
+          Free Tech Pack Template
         </h1>
         <p className="text-base text-gray-500 max-w-xl leading-relaxed">
           A general-purpose tech pack template for communicating your garment

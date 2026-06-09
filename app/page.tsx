@@ -11,10 +11,10 @@ const FEATURES = [
   },
   {
     href: "/templates",
-    title: "Tech Pack Template",
+    title: "Free Tech Pack Template",
     label: "02",
     description:
-      "Download our general tech pack template in Adobe Illustrator format, covering flat sketches, measurement spec sheet, fabric callouts, and more.",
+      "Download our free general tech pack template in Adobe Illustrator format, covering flat sketches, measurement spec sheet, fabric callouts, and more.",
     cta: "Get Template",
   },
   {
