@@ -1,8 +1,6 @@
-export const metadata = {
-  title: "Free Tech Pack Template — ED:EN Production",
-  description:
-    "Download the ED:EN Production general tech pack template in Adobe Illustrator format.",
-};
+'use client'
+
+import { trackTemplateDownloaded } from '@/lib/analytics'
 
 export default function TemplatesPage() {
   return (
