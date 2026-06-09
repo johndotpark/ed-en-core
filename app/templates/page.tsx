@@ -70,7 +70,7 @@ export default function TemplatesPage() {
       </div>
 
       {/* Preview image */}
-      <div className="mb-12 border border-gray-200 max-w-2xl">
+      <div className="mb-12 border border-gray-200">
         <img
           src="/tech-pack-preview.jpg"
           alt="Tech pack template preview"
