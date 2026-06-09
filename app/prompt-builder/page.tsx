@@ -32,6 +32,7 @@ const PRODUCTION_STAGES: { value: ProductionStage; description: string }[] = [
 ];
 
 const LS_KEY = "factory-os-prompt-builder";
+const SAVED_PROMPTS_KEY = "eden-saved-prompts";
 
 const schema = z.object({
   brandName: z.string().min(1, "Enter your brand name"),
@@ -47,10 +48,20 @@ const DEFAULT_VALUES: FormValues = {
   productionStage: "",
 };
 
+interface SavedPrompt {
+  id: string;
+  name: string;
+  prompt: string;
+  createdAt: string;
+}
+
 export default function PromptBuilderPage() {
   const [editedPrompt, setEditedPrompt] = useState("");
   const [copied, setCopied] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
+  const [savedPrompts, setSavedPrompts] = useState<SavedPrompt[]>([]);
+  const [savingName, setSavingName] = useState("");
+  const [showSaveInput, setShowSaveInput] = useState(false);
 
   const {
     register,
@@ -70,6 +81,13 @@ export default function PromptBuilderPage() {
       if (saved) reset(JSON.parse(saved));
     } catch {}
   }, [reset]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(SAVED_PROMPTS_KEY);
+      if (saved) setSavedPrompts(JSON.parse(saved));
+    } catch {}
+  }, []);
 
   const formValues = watch();
   useEffect(() => {
@@ -98,6 +116,8 @@ export default function PromptBuilderPage() {
     reset(DEFAULT_VALUES);
     setEditedPrompt("");
     setHasGenerated(false);
+    setShowSaveInput(false);
+    setSavingName("");
     try { localStorage.removeItem(LS_KEY); } catch {}
   }
 
@@ -109,6 +129,35 @@ export default function PromptBuilderPage() {
     a.download = "manufacturer-message.txt";
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  function handleSavePrompt() {
+    if (!savingName.trim()) return;
+    const newEntry: SavedPrompt = {
+      id: Date.now().toString(),
+      name: savingName.trim(),
+      prompt: editedPrompt,
+      createdAt: new Date().toISOString(),
+    };
+    const updated = [newEntry, ...savedPrompts];
+    setSavedPrompts(updated);
+    try { localStorage.setItem(SAVED_PROMPTS_KEY, JSON.stringify(updated)); } catch {}
+    setSavingName("");
+    setShowSaveInput(false);
+  }
+
+  function handleLoadPrompt(p: SavedPrompt) {
+    setEditedPrompt(p.prompt);
+    setHasGenerated(true);
+    setTimeout(() => {
+      document.getElementById("prompt-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }
+
+  function handleDeletePrompt(id: string) {
+    const updated = savedPrompts.filter((p) => p.id !== id);
+    setSavedPrompts(updated);
+    try { localStorage.setItem(SAVED_PROMPTS_KEY, JSON.stringify(updated)); } catch {}
   }
 
   return (
@@ -243,6 +292,46 @@ export default function PromptBuilderPage() {
                 </svg>
                 Download as Text File
               </button>
+              {/* Save prompt */}
+              {showSaveInput ? (
+                <div className="border border-gray-200 p-4 space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-gray-500">Save Prompt</p>
+                  <input
+                    autoFocus
+                    type="text"
+                    value={savingName}
+                    onChange={(e) => setSavingName(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") handleSavePrompt(); if (e.key === "Escape") { setShowSaveInput(false); setSavingName(""); } }}
+                    placeholder="Enter a name for this prompt"
+                    className="w-full border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-black bg-white"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={handleSavePrompt}
+                      disabled={!savingName.trim()}
+                      className="px-4 py-2 bg-black text-white text-xs font-medium hover:bg-gray-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { setShowSaveInput(false); setSavingName(""); }}
+                      className="px-4 py-2 border border-gray-300 text-xs hover:border-black transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowSaveInput(true)}
+                  className="w-full px-4 py-3 border border-gray-300 text-sm hover:border-black transition-colors"
+                >
+                  Save Prompt
+                </button>
+              )}
             </>
           ) : (
             <div className="border border-dashed border-gray-200 p-8 text-center">
@@ -256,6 +345,43 @@ export default function PromptBuilderPage() {
           )}
         </div>
       </div>
+
+      {/* Saved Prompts */}
+      {savedPrompts.length > 0 && (
+        <section className="mt-16 border-t border-gray-100 pt-10">
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-6">
+            Saved Prompts
+          </p>
+          <div className="divide-y divide-gray-100">
+            {savedPrompts.map((p) => (
+              <div key={p.id} className="py-4 flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{p.name}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {new Date(p.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => handleLoadPrompt(p)}
+                    className="text-xs px-3 py-1.5 border border-gray-300 hover:border-black transition-colors"
+                  >
+                    Load
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDeletePrompt(p.id)}
+                    className="text-xs px-3 py-1.5 border border-gray-300 hover:border-black transition-colors text-gray-500 hover:text-black"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Denim Bulk QC reference */}
       <section className="mt-20 border-t border-gray-100 pt-12">

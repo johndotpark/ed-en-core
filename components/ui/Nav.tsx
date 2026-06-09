@@ -9,6 +9,9 @@ const NAV_LINKS = [
   { href: "/templates", label: "Tech Pack Templates" },
   { href: "/checklist", label: "Production Checklist" },
   { href: "/resources", label: "Resources" },
+  { href: "/glossary", label: "Glossary" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/calculator", label: "Calculator" },
 ];
 
 export default function Nav() {
