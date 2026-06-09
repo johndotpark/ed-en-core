@@ -48,6 +48,12 @@ export default function TemplatesPage() {
               href="https://drive.google.com/uc?export=download&id=1toP9HBST5YX9rnSEs9xCaJTYAtNodDOk"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackTemplateDownloaded({
+                template_name: 'General Tech Pack',
+                template_category: 'general',
+                file_type: 'ai',
+                source_page: '/templates',
+              })}
               className="flex items-center justify-between px-4 py-3 bg-black text-white text-sm hover:bg-gray-800 transition-colors"
             >
               <span>Download .ai file</span>
