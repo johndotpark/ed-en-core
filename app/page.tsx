@@ -11,10 +11,10 @@ const FEATURES = [
   },
   {
     href: "/templates",
-    title: "Tech Pack Template",
+    title: "Free Tech Pack Template",
     label: "02",
     description:
-      "Download our general tech pack template in Adobe Illustrator format, covering flat sketches, measurement spec sheet, fabric callouts, and more.",
+      "Download our free general tech pack template in Adobe Illustrator format, covering flat sketches, measurement spec sheet, fabric callouts, and more.",
     cta: "Get Template",
   },
   {
@@ -44,22 +44,23 @@ export default function HomePage() {
           ED:EN Production
         </p>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-tight max-w-3xl mb-8">
-          Production tools for clothing brand owners.
+          Stop production mistakes before they reach your bulk order.
         </h1>
         <p className="text-lg text-gray-500 max-w-xl leading-relaxed mb-10">
-          Generate manufacturer communication prompts, complete production
-          checklists, and download tech-pack templates, all in one place.
+          Generate factory messages, follow proven production checklists,
+          calculate landed costs, and download tech-pack templates built for
+          clothing-brand owners.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/prompt-builder"
             className="px-6 py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors"
           >
-            Start with Prompt Builder
+            Generate Your Factory Message
           </Link>
           <Link
             href="/checklist"
-            className="px-6 py-3 border border-gray-300 text-sm font-medium hover:border-black transition-colors"
+            className="px-6 py-3 border border-gray-300 text-sm font-medium text-gray-600 hover:border-black hover:text-black transition-colors"
           >
             View Production Checklist
           </Link>

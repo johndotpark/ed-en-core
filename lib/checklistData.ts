@@ -22,7 +22,7 @@ export const CHECKLIST_STEPS: ChecklistStep[] = [
       },
       {
         id: "s1-3",
-        label: "Verify factory certifications (ISO, OEKO-TEX, GOTS, etc.)",
+        label: "Verify any certifications required for your product, materials, market, or brand claims (ISO, OEKO-TEX, GOTS, etc. only apply where relevant)",
         checked: false,
       },
       {
@@ -90,6 +90,21 @@ export const CHECKLIST_STEPS: ChecklistStep[] = [
       {
         id: "s2-7",
         label: "Select preferred manufacturer and confirm partnership",
+        checked: false,
+      },
+      {
+        id: "s2-8",
+        label: "Confirm who owns patterns, molds, artwork, and custom hardware developed during production",
+        checked: false,
+      },
+      {
+        id: "s2-9",
+        label: "Confirm payment milestones and terms in writing before production begins",
+        checked: false,
+      },
+      {
+        id: "s2-10",
+        label: "Confirm remake or refund terms in writing before production begins",
         checked: false,
       },
     ],
@@ -249,6 +264,16 @@ export const CHECKLIST_STEPS: ChecklistStep[] = [
         label: "Retain sealed/approved sample for QC comparison",
         checked: false,
       },
+      {
+        id: "s5-9",
+        label: "Confirm approved measurement tolerances in writing",
+        checked: false,
+      },
+      {
+        id: "s5-10",
+        label: "Retain a sealed approved production sample as your QC benchmark",
+        checked: false,
+      },
     ],
   },
   {
@@ -342,6 +367,16 @@ export const CHECKLIST_STEPS: ChecklistStep[] = [
         label: "Issue pass or fail — send defect complaint if needed",
         checked: false,
         promptLink: "/prompt-builder",
+      },
+      {
+        id: "s7-9",
+        label: "Do not approve shipment solely based on factory-selected photos",
+        checked: false,
+      },
+      {
+        id: "s7-10",
+        label: "Consider third-party inspection for high-value or high-risk orders",
+        checked: false,
       },
     ],
   },
