@@ -11,11 +11,11 @@ const FEATURES = [
   },
   {
     href: "/templates",
-    title: "Tech Pack Templates",
+    title: "Tech Pack Template",
     label: "02",
     description:
-      "Download ready-made tech pack templates for T-shirts, hoodies, denim, sweatpants, and jackets in PDF, Illustrator, and spreadsheet formats.",
-    cta: "Browse Templates",
+      "Download our general tech pack template in Adobe Illustrator format, covering flat sketches, measurement spec sheet, fabric callouts, and more.",
+    cta: "Get Template",
   },
   {
     href: "/checklist",
